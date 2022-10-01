@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:parcsmart_driver/utills/common_widgets.dart';
+import 'package:parcsmart_driver/utils/common_widgets.dart';
+import 'package:webview_flutter_plus/webview_flutter_plus.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -14,7 +15,7 @@ class SignUpPage extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Padding(
         padding: EdgeInsets.only(
-            left: width * 0.04, right: width * 0.04, top: height * 0.1),
+            left: width * 0.08, right: width * 0.08, top: height * 0.1),
         child: SingleChildScrollView(
           child: Column(
             //  mainAxisAlignment: MainAxisAlignment.center,
@@ -31,7 +32,6 @@ class SignUpPage extends StatelessWidget {
               CommonWidgets.customTextField(
                   preFix: const Icon(
                     Icons.person,
-                    // size: 25,
                   ),
                   contentBottomPadding: 15,
                   contentTopPadding: 15,
@@ -58,13 +58,48 @@ class SignUpPage extends StatelessWidget {
                 contentLeftPadding: 0,
                 contentTopPadding: 15,
               ),
+              // SizedBox(height: height * 0.05),
+              SizedBox(
+//                width: width,
+                height: height * 0.15,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 18.0),
+                  child: WebViewPlus(
+                    javascriptMode: JavascriptMode.unrestricted,
+                    onWebViewCreated: (controller) {
+                      controller.loadUrl("assets/webview/index.html");
+                    },
+                    //  backgroundColor: Colors.red,
+                    //    zoomEnabled: true,
+                    //  gestureNavigationEnabled: true,
+
+                    // javascriptChannels: {
+                    //   JavascriptChannel(
+                    //       name: 'Captcha',
+                    //       onMessageReceived: (JavascriptMessage message) {
+                    //         print(
+                    //             '/////////////////////message = $message //////////////////////');
+                    //       })
+                    // },
+                  ),
+                ),
+              ),
+              // SizedBox(height: height * 0.05),
+              CommonWidgets.customButton(
+                width: width * 0.85,
+                height: height * 0.07,
+                onPressed: () {},
+                btnName: 'Sign Up',
+                btnTextSize: 25,
+              ),
               SizedBox(height: height * 0.05),
               CommonWidgets.customButton(
-                  width: width * 0.95,
-                  height: height * 0.07,
-                  btnTextSize: 25,
-                  onPressed: () {},
-                  btnName: 'Sign Up')
+                onPressed: () {},
+                btnName: 'Cancel',
+                btnTextSize: 20,
+                width: width * 0.85,
+                height: height * 0.07,
+              )
             ],
           ),
         ),
