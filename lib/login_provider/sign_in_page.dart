@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:parcsmart_driver/login_provider/forgot_pin.dart';
+import 'package:parcsmart_driver/login_provider/privacy_policy.dart';
+import 'package:parcsmart_driver/login_provider/sign_up_page.dart';
 import 'package:parcsmart_driver/utils/common_widgets.dart';
 
 class SignIn extends StatelessWidget {
@@ -23,7 +26,7 @@ class SignIn extends StatelessWidget {
             //mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                color: const Color(0xffEDEDDC),
+                color: Colors.transparent,
                 height: height * 0.4,
                 child: Image(
                   fit: BoxFit.fitWidth,
@@ -50,8 +53,8 @@ class SignIn extends StatelessWidget {
               ),
               CommonWidgets.customTextField(
                 preFix: const Icon(Icons.pin),
-                hintText: 'Your 4 Digit Pin',
                 contentBottomPadding: 15,
+                hintText: 'Your 4 Digit Pin',
                 contentLeftPadding: 0,
                 maxLength: 4,
                 textInputType: TextInputType.phone,
@@ -59,13 +62,24 @@ class SignIn extends StatelessWidget {
                 contentTopPadding: 15,
               ),
               CommonWidgets.customButton(
-                width: width * 0.85,
+                width: width,
                 height: height * 0.06,
                 onPressed: () {},
                 btnName: 'Sign In',
-                btnTextColor: Colors.white,
-                btnBackGroundColor: const Color(0xffEDEDDC),
               ),
+              SizedBox(
+                height: height * 0.009,
+              ),
+              CommonWidgets.customButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ForgotPin()));
+                  },
+                  width: width,
+                  height: height * 0.06,
+                  btnName: 'Forgot Pin?'),
               SizedBox(
                 height: height * 0.04,
                 child: Row(
@@ -87,10 +101,10 @@ class SignIn extends StatelessWidget {
                     ),
                     InkWell(
                       onTap: () {
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => const SignIn()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SignUpPage()));
                       },
                       splashColor: Colors.redAccent,
                       child: const Text(
@@ -103,6 +117,28 @@ class SignIn extends StatelessWidget {
                       ),
                     ),
                   ],
+                ),
+              ),
+              SizedBox(
+                height: height * 0.1,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    right: 0,
+                    //   left: width * 0.59,
+                    top: 5,
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const PrivacyPolicy()));
+                    },
+                    child: const Text(
+                      'Privacy Policy',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
                 ),
               )
             ],

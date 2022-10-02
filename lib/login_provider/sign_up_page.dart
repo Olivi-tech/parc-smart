@@ -86,7 +86,7 @@ class SignUpPage extends StatelessWidget {
                     onWebViewCreated: (controller) {
                       controller.loadUrl("assets/webview/index.html");
                     },
-                    backgroundColor: const Color(0xff009688),
+                    backgroundColor: const Color(0xffEDEDDC),
                     // javascriptChannels: {
                     //   JavascriptChannel(
                     //       name: 'Captcha',
@@ -104,8 +104,6 @@ class SignUpPage extends StatelessWidget {
                 height: height * 0.06,
                 onPressed: () {},
                 btnName: 'Sign Up',
-                btnTextColor: Colors.white,
-                btnBackGroundColor: const Color(0xffEDEDDC),
               ),
               SizedBox(
                 height: height * 0.04,

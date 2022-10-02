@@ -43,9 +43,9 @@ class CommonWidgets {
       {required void Function()? onPressed,
       required String btnName,
       double? height,
-      Color? btnTextColor = Colors.white,
+      // Color? btnTextColor = Colors.white,
       double? btnTextSize = 25,
-      Color? btnBackGroundColor = const Color(0xffEDEDDC),
+      //  Color? btnBackGroundColor = const Color(0xffEDEDDC),
       double? width}) {
     return SizedBox(
       width: width,
@@ -55,7 +55,7 @@ class CommonWidgets {
           style: ElevatedButton.styleFrom(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            foregroundColor: btnTextColor,
+            //  foregroundColor: btnTextColor,
             // backgroundColor: btnBackGroundColor,
           ),
           child: Text(
