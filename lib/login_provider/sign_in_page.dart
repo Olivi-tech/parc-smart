@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:parcsmart_driver/login_provider/sign_in_page.dart';
 import 'package:parcsmart_driver/utils/common_widgets.dart';
-import 'package:webview_flutter_plus/webview_flutter_plus.dart';
 
-class SignUpPage extends StatelessWidget {
-  const SignUpPage({Key? key}) : super(key: key);
-
+class SignIn extends StatelessWidget {
+  const SignIn({Key? key}) : super(key: key);
+  final String headerImage = 'assets/images/loginHeader.png';
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -18,35 +16,20 @@ class SignUpPage extends StatelessWidget {
         padding: EdgeInsets.only(
           left: width * 0.08,
           right: width * 0.08,
-          top: height * 0.1,
+          top: height * 0.038,
         ),
         child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            //mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                'Create Account',
-                // textScaleFactor: 1,
-                style: TextStyle(
-                    // color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 35,
-                    color: Colors.teal.withOpacity(1)),
+              Container(
+                color: const Color(0xffEDEDDC),
+                height: height * 0.4,
+                child: Image(
+                  fit: BoxFit.fitWidth,
+                  image: AssetImage(headerImage),
+                ),
               ),
-              SizedBox(height: height * 0.03),
-              CommonWidgets.customTextField(
-                  preFix: const Icon(
-                    Icons.person,
-                  ),
-                  textInputType: TextInputType.name,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp('[a-zA-Z 0-9]'))
-                  ],
-                  contentBottomPadding: 15,
-                  contentTopPadding: 15,
-                  contentLeftPadding: 0.0,
-                  hintText: 'Your Name'),
-              SizedBox(height: height * 0.009),
               IntlPhoneField(
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 dropdownTextStyle: const TextStyle(fontSize: 16),
@@ -65,7 +48,6 @@ class SignUpPage extends StatelessWidget {
                   filled: true,
                 ),
               ),
-              // SizedBox(height: height * 0.004),
               CommonWidgets.customTextField(
                 preFix: const Icon(Icons.pin),
                 hintText: 'Your 4 Digit Pin',
@@ -76,34 +58,11 @@ class SignUpPage extends StatelessWidget {
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 contentTopPadding: 15,
               ),
-              // SizedBox(height: height * 0.05),
-              SizedBox(
-                height: height * 0.25,
-                child: Padding(
-                  padding: EdgeInsets.only(left: width <= 360 ? 0 : 15),
-                  child: WebViewPlus(
-                    javascriptMode: JavascriptMode.unrestricted,
-                    onWebViewCreated: (controller) {
-                      controller.loadUrl("assets/webview/index.html");
-                    },
-                    backgroundColor: const Color(0xff009688),
-                    // javascriptChannels: {
-                    //   JavascriptChannel(
-                    //       name: 'Captcha',
-                    //       onMessageReceived: (JavascriptMessage message) {
-                    //         print(
-                    //             '/////////////////////message = $message //////////////////////');
-                    //       })
-                    // },
-                  ),
-                ),
-              ),
-              // SizedBox(height: height * 0.05),
               CommonWidgets.customButton(
                 width: width * 0.85,
                 height: height * 0.06,
                 onPressed: () {},
-                btnName: 'Sign Up',
+                btnName: 'Sign In',
                 btnTextColor: Colors.white,
                 btnBackGroundColor: const Color(0xffEDEDDC),
               ),
@@ -115,7 +74,7 @@ class SignUpPage extends StatelessWidget {
                     const Padding(
                       padding: EdgeInsets.only(top: 4.0),
                       child: Text(
-                        'Have Account?',
+                        'Don\'t have account?',
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.black,
@@ -128,14 +87,14 @@ class SignUpPage extends StatelessWidget {
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SignIn()));
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => const SignIn()));
                       },
                       splashColor: Colors.redAccent,
                       child: const Text(
-                        'Sign in',
+                        'Sign Up',
                         style: TextStyle(
                           fontSize: 20,
                           color: Colors.teal,
@@ -146,15 +105,6 @@ class SignUpPage extends StatelessWidget {
                   ],
                 ),
               )
-              // SizedBox(height: height * 0.01),
-              // CommonWidgets.customButton(
-              //   onPressed: () {},
-              //   btnName: 'Sign in',
-              //   width: width * 0.85,
-              //   height: height * 0.06,
-              //   btnTextColor: Colors.white,
-              //   btnBackGroundColor: const Color(0xffEDEDDC),
-              // )
             ],
           ),
         ),

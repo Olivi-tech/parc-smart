@@ -19,8 +19,17 @@ class CommonWidgets {
       decoration: InputDecoration(
         prefixIcon: preFix,
         fillColor: Colors.white.withOpacity(1),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: const BorderSide(color: Colors.teal)),
         filled: true,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide:
+                BorderSide(color: Colors.yellowAccent.withOpacity(0.5))),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
         contentPadding: EdgeInsets.only(
             top: contentTopPadding,
             bottom: contentBottomPadding,
