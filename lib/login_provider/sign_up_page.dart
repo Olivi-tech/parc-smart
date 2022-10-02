@@ -16,10 +16,10 @@ class SignUpPage extends StatelessWidget {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.only(
-          left: width * 0.08,
-          right: width * 0.08,
-          top: height * 0.1,
-        ),
+            left: width * 0.08,
+            right: width * 0.08,
+            top: height * 0.15,
+            bottom: 0.0),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -33,7 +33,7 @@ class SignUpPage extends StatelessWidget {
                     fontSize: 35,
                     color: Colors.teal.withOpacity(1)),
               ),
-              SizedBox(height: height * 0.03),
+              SizedBox(height: height * 0.04),
               CommonWidgets.customTextField(
                   preFix: const Icon(
                     Icons.person,
@@ -46,7 +46,7 @@ class SignUpPage extends StatelessWidget {
                   contentTopPadding: 15,
                   contentLeftPadding: 0.0,
                   hintText: 'Your Name'),
-              SizedBox(height: height * 0.009),
+              SizedBox(height: height * 0.02),
               IntlPhoneField(
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 dropdownTextStyle: const TextStyle(fontSize: 16),
@@ -106,16 +106,17 @@ class SignUpPage extends StatelessWidget {
                 btnName: 'Sign Up',
               ),
               SizedBox(
-                height: height * 0.04,
+                height: height * 0.06,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Padding(
                       padding: EdgeInsets.only(top: 4.0),
                       child: Text(
                         'Have Account?',
                         style: TextStyle(
-                          fontSize: 16,
+                          //  fontSize: 16,
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
                         ),
@@ -132,12 +133,15 @@ class SignUpPage extends StatelessWidget {
                                 builder: (context) => const SignIn()));
                       },
                       splashColor: Colors.redAccent,
-                      child: const Text(
-                        'Sign in',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.teal,
-                          fontWeight: FontWeight.bold,
+                      child: const Padding(
+                        padding: EdgeInsets.only(top: 4.0),
+                        child: Text(
+                          'Sign in',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.teal,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),

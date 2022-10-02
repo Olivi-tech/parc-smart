@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:parcsmart_driver/login_provider/sign_in_page.dart';
 import 'package:parcsmart_driver/utils/common_widgets.dart';
 
 class ForgotPin extends StatelessWidget {
@@ -18,7 +19,6 @@ class ForgotPin extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                // padding: const EdgeInsets.only(top: 10),
                 color: Colors.transparent,
                 height: height * 0.4,
                 width: width,
@@ -52,7 +52,12 @@ class ForgotPin extends StatelessWidget {
                 height: height * 0.005,
               ),
               CommonWidgets.customButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SignIn()));
+                  },
                   height: height * 0.06,
                   width: width,
                   btnName: 'Send Pin'),

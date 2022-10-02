@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:parcsmart_driver/login_provider/sign_up_page.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:parcsmart_driver/custom_google_map.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,6 +28,6 @@ void main() {
       // ),
       scaffoldBackgroundColor: const Color(0xffEDEDDC),
     ),
-    home: const SignUpPage(),
+    home: const CustomGoogleMap(),
   ));
 }

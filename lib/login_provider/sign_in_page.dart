@@ -72,7 +72,7 @@ class SignIn extends StatelessWidget {
               ),
               CommonWidgets.customButton(
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                             builder: (context) => const ForgotPin()));
@@ -81,63 +81,64 @@ class SignIn extends StatelessWidget {
                   height: height * 0.06,
                   btnName: 'Forgot Pin?'),
               SizedBox(
-                height: height * 0.04,
+                height: height * 0.06,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Padding(
                       padding: EdgeInsets.only(top: 4.0),
                       child: Text(
                         'Don\'t have account?',
                         style: TextStyle(
-                          fontSize: 16,
+                          // fontSize: 16,
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                     const SizedBox(
-                      width: 5,
+                      width: 8,
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => const SignUpPage()));
                       },
                       splashColor: Colors.redAccent,
-                      child: const Text(
-                        'Sign Up',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.teal,
-                          fontWeight: FontWeight.bold,
+                      child: const Padding(
+                        padding: EdgeInsets.only(top: 3.0),
+                        child: Text(
+                          'Sign Up',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.teal,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-              SizedBox(
-                height: height * 0.1,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    right: 0,
-                    //   left: width * 0.59,
-                    top: 5,
-                  ),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const PrivacyPolicy()));
-                    },
-                    child: const Text(
-                      'Privacy Policy',
-                      style: TextStyle(color: Colors.black),
-                    ),
+              Padding(
+                padding: EdgeInsets.only(
+                  right: 0,
+                  left: width <= 360 ? width * 0.58 : width * 0.6,
+                  top: 5,
+                ),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const PrivacyPolicy()));
+                  },
+                  child: const Text(
+                    'Privacy Policy',
+                    style: TextStyle(color: Colors.black),
                   ),
                 ),
               )
