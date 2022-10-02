@@ -10,69 +10,77 @@ class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    print('/////////////////////////////$width//////////////////////////');
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Padding(
         padding: EdgeInsets.only(
-            left: width * 0.08, right: width * 0.08, top: height * 0.1),
+          left: width * 0.08,
+          right: width * 0.08,
+          top: height * 0.1,
+        ),
         child: SingleChildScrollView(
           child: Column(
-            //  mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'Create Account',
+                // textScaleFactor: 1,
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25,
-                  // color: Colors.white
-                ),
+                    // color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 35,
+                    color: Colors.teal.withOpacity(1)),
               ),
-              SizedBox(height: height * 0.05),
+              SizedBox(height: height * 0.03),
               CommonWidgets.customTextField(
                   preFix: const Icon(
                     Icons.person,
                   ),
+                  textInputType: TextInputType.name,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp('[a-zA-Z 0-9]'))
+                  ],
                   contentBottomPadding: 15,
                   contentTopPadding: 15,
                   contentLeftPadding: 0.0,
                   hintText: 'Your Name'),
-              SizedBox(height: height * 0.029),
+              SizedBox(height: height * 0.009),
               IntlPhoneField(
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 dropdownTextStyle: const TextStyle(fontSize: 16),
                 decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.only(bottom: 0),
+                  contentPadding: const EdgeInsets.only(bottom: 10),
                   fillColor: Colors.white,
                   constraints: const BoxConstraints(maxHeight: 70),
+                  //  border: InputBorder.none,
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15)),
                   filled: true,
                 ),
               ),
-              SizedBox(height: height * 0.004),
+              // SizedBox(height: height * 0.004),
               CommonWidgets.customTextField(
                 preFix: const Icon(Icons.pin),
                 hintText: 'Your 4 Digit Pin',
                 contentBottomPadding: 15,
                 contentLeftPadding: 0,
+                maxLength: 4,
+                textInputType: TextInputType.phone,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 contentTopPadding: 15,
               ),
               // SizedBox(height: height * 0.05),
               SizedBox(
-//                width: width,
-                height: height * 0.15,
+                height: height * 0.25,
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 18.0),
+                  padding: EdgeInsets.only(left: width <= 360 ? 0 : 15),
                   child: WebViewPlus(
                     javascriptMode: JavascriptMode.unrestricted,
                     onWebViewCreated: (controller) {
                       controller.loadUrl("assets/webview/index.html");
                     },
-                    //  backgroundColor: Colors.red,
-                    //    zoomEnabled: true,
-                    //  gestureNavigationEnabled: true,
-
+                    backgroundColor: const Color(0xff009688),
                     // javascriptChannels: {
                     //   JavascriptChannel(
                     //       name: 'Captcha',
@@ -87,19 +95,55 @@ class SignUpPage extends StatelessWidget {
               // SizedBox(height: height * 0.05),
               CommonWidgets.customButton(
                 width: width * 0.85,
-                height: height * 0.07,
+                height: height * 0.06,
                 onPressed: () {},
                 btnName: 'Sign Up',
-                btnTextSize: 25,
+                btnTextColor: Colors.white,
+                btnBackGroundColor: const Color(0xffEDEDDC),
               ),
-              SizedBox(height: height * 0.05),
-              CommonWidgets.customButton(
-                onPressed: () {},
-                btnName: 'Cancel',
-                btnTextSize: 20,
-                width: width * 0.85,
-                height: height * 0.07,
+              SizedBox(
+                height: height * 0.04,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4.0),
+                      child: InkWell(
+                        onTap: () {},
+                        splashColor: Colors.red,
+                        child: const Text(
+                          'Have Account?',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    const Text(
+                      'Sign in',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.teal,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
               )
+              // SizedBox(height: height * 0.01),
+              // CommonWidgets.customButton(
+              //   onPressed: () {},
+              //   btnName: 'Sign in',
+              //   width: width * 0.85,
+              //   height: height * 0.06,
+              //   btnTextColor: Colors.white,
+              //   btnBackGroundColor: const Color(0xffEDEDDC),
+              // )
             ],
           ),
         ),
