@@ -1,16 +1,12 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 import 'package:parcsmart_driver/login_provider/sign_in_page.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class CustomGoogleMap extends StatefulWidget {
   const CustomGoogleMap({Key? key}) : super(key: key);
-  static const LatLng _kMapCenter =
-      LatLng(19.018255973653343, 72.84793849278007);
-  static const CameraPosition _kInitialPosition =
-      CameraPosition(target: _kMapCenter, zoom: 11.0, tilt: 0, bearing: 0);
-  static final Completer<GoogleMapController> _controller = Completer();
 
   @override
   State<CustomGoogleMap> createState() => _CustomGoogleMapState();
@@ -18,11 +14,16 @@ class CustomGoogleMap extends StatefulWidget {
 
 class _CustomGoogleMapState extends State<CustomGoogleMap> {
   bool isSwitched = false;
+  Set<Marker> markers = {};
   late TextEditingController _searchController;
+  late GoogleMapController googleMapController;
+  static const CameraPosition initialCameraPosition = CameraPosition(
+      target: LatLng(37.42796133580664, -122.085749655962), zoom: 14);
 
   @override
-  void initState() {
-    // TODO: implement initState
+  initState() {
+    // bool isGranted = true;
+    // requestLocation();
     super.initState();
     _searchController = TextEditingController();
     _searchController.addListener(() {
@@ -35,6 +36,59 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     // TODO: implement dispose
     super.dispose();
     _searchController.dispose();
+  }
+
+  Future requestLocation() async {
+    if (await Permission.locationWhenInUse.isDenied) {
+      await Permission.locationWhenInUse.request();
+      if (await Permission.locationWhenInUse.request().isGranted) {
+        Location location = Location();
+        bool isOn = await location.serviceEnabled();
+        print('/////////////////////////is on = ///$isOn/////////////////');
+        if (!isOn) {
+          bool turnedOn = await location.requestService();
+          if (turnedOn) {
+            print('Location is turned on');
+          } else {
+            print('Location is turned of');
+          }
+        }
+      } else {
+        print(
+            '//////////////////////////permission has been denied//////////////////////');
+        // Center(
+        //   child: SizedBox(
+        //     width: 200,
+        //     height: 200,
+        //     child: AlertDialog(
+        //       backgroundColor: Colors.white,
+        //       elevation: 5,
+        //       shape: RoundedRectangleBorder(
+        //           borderRadius: BorderRadius.circular(20)),
+        //       contentPadding: const EdgeInsets.all(10),
+        //       title: const Text('Location Required!'),
+        //       content: const Text(
+        //           'InOrder to find your Current location, we need access location for this app only when you are using this app'),
+        //       actions: [
+        //         ElevatedButton(
+        //             onPressed: () {
+        //               Navigator.pop(context);
+        //             },
+        //             child: const Text('Deny')),
+        //         ElevatedButton(
+        //             onPressed: () {
+        //               Navigator.pop(context);
+        //               requestLocation();
+        //             },
+        //             child: const Text('Grant')),
+        //       ],
+        //     ),
+        //   ),
+        // );
+      }
+    } else {
+      print('Location Was Granted Previously');
+    }
   }
 
   @override
@@ -106,23 +160,25 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
           ),
           SizedBox(
             width: width,
-            height: height * 0.8,
+            height: height * 0.86,
             child: GoogleMap(
-              initialCameraPosition: CustomGoogleMap._kInitialPosition,
-              myLocationButtonEnabled: true,
-              indoorViewEnabled: true,
-              // mapType: MapType.hybrid,
-              onMapCreated: (GoogleMapController controller) {
-                CustomGoogleMap._controller.complete(controller);
-              },
-            ),
+                markers: markers,
+                myLocationEnabled: true,
+                zoomControlsEnabled: false,
+                initialCameraPosition: initialCameraPosition,
+                myLocationButtonEnabled: false,
+                indoorViewEnabled: true,
+                // mapType: MapType.hybrid,
+                onMapCreated: (GoogleMapController controller) {
+                  googleMapController = controller;
+                }),
           ),
           Container(
             width: width,
-            height: height * 0.05,
+            height: height * 0.03,
             color: Colors.white,
             child: Padding(
-              padding: EdgeInsets.only(left: width * 0.1, top: height * 0.012),
+              padding: EdgeInsets.only(left: width * 0.1, top: height * 0.003),
               child: const Text(
                 'Can\'t find or park? Login to request assistance ',
                 style: TextStyle(
@@ -131,8 +187,9 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
               ),
             ),
           ),
-          SizedBox(
-            height: height * 0.06,
+          Container(
+            color: Colors.green,
+            height: height * 0.04,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -179,6 +236,52 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
           )
         ],
       ),
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(right: width * 0.78, bottom: height * 0.05),
+        child: FloatingActionButton(
+          splashColor: Colors.red,
+          onPressed: () async {
+            Position position = await _getCurrentPosition();
+            print('///////////////////$position///////////////////////');
+            googleMapController.animateCamera(CameraUpdate.newCameraPosition(
+              CameraPosition(
+                  target: LatLng(position.latitude, position.longitude),
+                  zoom: 17),
+            ));
+            markers.clear();
+            markers.add(Marker(
+                markerId: const MarkerId('Current Position'),
+                position: LatLng(position.latitude, position.longitude)));
+            setState(() {});
+          },
+          child: const Icon(Icons.my_location),
+        ),
+      ),
     );
+  }
+
+  Future<Position> _getCurrentPosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+
+    if (!serviceEnabled) {
+      Location location = Location();
+      await location.requestService();
+      // return Future.error('Location services are disabled');
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        Future.error('Location Permission denied');
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      Future.error('Location permissions are permanently denied');
+    }
+    Position position = await Geolocator.getCurrentPosition();
+    return position;
   }
 }
