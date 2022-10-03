@@ -56,7 +56,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10))),
               onPressed: () {
-                Navigator.pushReplacement(context,
+                Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const SignIn()));
               },
               child: const Text(

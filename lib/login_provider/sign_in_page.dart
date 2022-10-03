@@ -138,7 +138,8 @@ class SignIn extends StatelessWidget {
                   },
                   child: const Text(
                     'Privacy Policy',
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
                   ),
                 ),
               )

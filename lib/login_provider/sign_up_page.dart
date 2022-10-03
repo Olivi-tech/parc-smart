@@ -7,33 +7,43 @@ import 'package:webview_flutter_plus/webview_flutter_plus.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({Key? key}) : super(key: key);
-
+  final String signUpImage = 'assets/images/sign-up.png';
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     print('/////////////////////////////$width//////////////////////////');
     double height = MediaQuery.of(context).size.height;
+    print('/////////////////////////////$height//////////////////////////');
+
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.only(
             left: width * 0.08,
             right: width * 0.08,
-            top: height * 0.15,
+            top: height * 0.04,
             bottom: 0.0),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(
-                'Create Account',
-                // textScaleFactor: 1,
-                style: TextStyle(
-                    // color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 35,
-                    color: Colors.teal.withOpacity(1)),
+              SizedBox(
+                height: height * 0.3,
+                width: width,
+                child: Image(
+                  fit: BoxFit.fitWidth,
+                  image: AssetImage(signUpImage),
+                ),
               ),
-              SizedBox(height: height * 0.04),
+              // Text(
+              //   'Create Account',
+              //   // textScaleFactor: 1,
+              //   style: TextStyle(
+              //       // color: Colors.black,
+              //       fontWeight: FontWeight.bold,
+              //       fontSize: 35,
+              //       color: Colors.teal.withOpacity(1)),
+              // ),
+              SizedBox(height: height * 0.01),
               CommonWidgets.customTextField(
                   preFix: const Icon(
                     Icons.person,
@@ -106,7 +116,7 @@ class SignUpPage extends StatelessWidget {
                 btnName: 'Sign Up',
               ),
               SizedBox(
-                height: height * 0.06,
+                height: height * 0.04,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
