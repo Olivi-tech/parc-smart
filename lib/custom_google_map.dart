@@ -3,7 +3,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:parcsmart_driver/login_provider/sign_in_page.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class CustomGoogleMap extends StatefulWidget {
   const CustomGoogleMap({Key? key}) : super(key: key);
@@ -14,21 +13,50 @@ class CustomGoogleMap extends StatefulWidget {
 
 class _CustomGoogleMapState extends State<CustomGoogleMap> {
   bool isSwitched = false;
-  Set<Marker> markers = {};
   late TextEditingController _searchController;
   late GoogleMapController googleMapController;
-  static const CameraPosition initialCameraPosition = CameraPosition(
-      target: LatLng(37.42796133580664, -122.085749655962), zoom: 14);
+  static const CameraPosition initialCameraPosition =
+      CameraPosition(target: LatLng(14.6824, -17.4408), zoom: 14);
 
+  final Set<Marker> _marker = {};
+  final Set<Marker> _list = {
+    // Marker(
+    //     markerId: MarkerId('0'),
+    //     position: LatLng(14.6824, -17.4408),
+    //     infoWindow: InfoWindow(title: 'PARC SMART')),
+    // Marker(
+    //     markerId: MarkerId('1'),
+    //     position: LatLng(14.6826, -17.4404),
+    //     infoWindow: InfoWindow(
+    //       title: '1-CENTRAL PARK',
+    //     )),
+    const Marker(
+        markerId: MarkerId('1'),
+        position: LatLng(14.6947, -17.4731),
+        infoWindow: InfoWindow(
+          title: 'My Position',
+        )),
+    const Marker(
+        markerId: MarkerId('2'),
+        position: LatLng(14.6951, -17.4595),
+        infoWindow: InfoWindow(
+          title: 'Location 1',
+        )),
+    const Marker(
+        markerId: MarkerId('3'),
+        position: LatLng(14.6751, -17.4369),
+        infoWindow: InfoWindow(
+          title: 'Location 2',
+        )),
+  };
   @override
   initState() {
-    // bool isGranted = true;
-    // requestLocation();
     super.initState();
     _searchController = TextEditingController();
     _searchController.addListener(() {
       setState(() {});
     });
+    _marker.addAll(_list);
   }
 
   @override
@@ -38,58 +66,58 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     _searchController.dispose();
   }
 
-  Future requestLocation() async {
-    if (await Permission.locationWhenInUse.isDenied) {
-      await Permission.locationWhenInUse.request();
-      if (await Permission.locationWhenInUse.request().isGranted) {
-        Location location = Location();
-        bool isOn = await location.serviceEnabled();
-        print('/////////////////////////is on = ///$isOn/////////////////');
-        if (!isOn) {
-          bool turnedOn = await location.requestService();
-          if (turnedOn) {
-            print('Location is turned on');
-          } else {
-            print('Location is turned of');
-          }
-        }
-      } else {
-        print(
-            '//////////////////////////permission has been denied//////////////////////');
-        // Center(
-        //   child: SizedBox(
-        //     width: 200,
-        //     height: 200,
-        //     child: AlertDialog(
-        //       backgroundColor: Colors.white,
-        //       elevation: 5,
-        //       shape: RoundedRectangleBorder(
-        //           borderRadius: BorderRadius.circular(20)),
-        //       contentPadding: const EdgeInsets.all(10),
-        //       title: const Text('Location Required!'),
-        //       content: const Text(
-        //           'InOrder to find your Current location, we need access location for this app only when you are using this app'),
-        //       actions: [
-        //         ElevatedButton(
-        //             onPressed: () {
-        //               Navigator.pop(context);
-        //             },
-        //             child: const Text('Deny')),
-        //         ElevatedButton(
-        //             onPressed: () {
-        //               Navigator.pop(context);
-        //               requestLocation();
-        //             },
-        //             child: const Text('Grant')),
-        //       ],
-        //     ),
-        //   ),
-        // );
-      }
-    } else {
-      print('Location Was Granted Previously');
-    }
-  }
+  // Future requestLocation() async {
+  //   if (await Permission.locationWhenInUse.isDenied) {
+  //     await Permission.locationWhenInUse.request();
+  //     if (await Permission.locationWhenInUse.request().isGranted) {
+  //       Location location = Location();
+  //       bool isOn = await location.serviceEnabled();
+  //       print('/////////////////////////is on = ///$isOn/////////////////');
+  //       if (!isOn) {
+  //         bool turnedOn = await location.requestService();
+  //         if (turnedOn) {
+  //           print('Location is turned on');
+  //         } else {
+  //           print('Location is turned of');
+  //         }
+  //       }
+  //     } else {
+  //       print(
+  //           '//////////////////////////permission has been denied//////////////////////');
+  //       // Center(
+  //       //   child: SizedBox(
+  //       //     width: 200,
+  //       //     height: 200,
+  //       //     child: AlertDialog(
+  //       //       backgroundColor: Colors.white,
+  //       //       elevation: 5,
+  //       //       shape: RoundedRectangleBorder(
+  //       //           borderRadius: BorderRadius.circular(20)),
+  //       //       contentPadding: const EdgeInsets.all(10),
+  //       //       title: const Text('Location Required!'),
+  //       //       content: const Text(
+  //       //           'InOrder to find your Current location, we need access location for this app only when you are using this app'),
+  //       //       actions: [
+  //       //         ElevatedButton(
+  //       //             onPressed: () {
+  //       //               Navigator.pop(context);
+  //       //             },
+  //       //             child: const Text('Deny')),
+  //       //         ElevatedButton(
+  //       //             onPressed: () {
+  //       //               Navigator.pop(context);
+  //       //               requestLocation();
+  //       //             },
+  //       //             child: const Text('Grant')),
+  //       //       ],
+  //       //     ),
+  //       //   ),
+  //       // );
+  //     }
+  //   } else {
+  //     print('Location Was Granted Previously');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -162,9 +190,8 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
             width: width,
             height: height * 0.86,
             child: GoogleMap(
-                markers: markers,
+                markers: _marker,
                 myLocationEnabled: true,
-                zoomControlsEnabled: false,
                 initialCameraPosition: initialCameraPosition,
                 myLocationButtonEnabled: false,
                 indoorViewEnabled: true,
@@ -248,10 +275,10 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
                   target: LatLng(position.latitude, position.longitude),
                   zoom: 17),
             ));
-            markers.clear();
-            markers.add(Marker(
-                markerId: const MarkerId('Current Position'),
-                position: LatLng(position.latitude, position.longitude)));
+            // markers.clear();
+            // markers.add(Marker(
+            //     markerId: const MarkerId('Current Position'),
+            //     position: LatLng(position.latitude, position.longitude)));
             setState(() {});
           },
           child: const Icon(Icons.my_location),
