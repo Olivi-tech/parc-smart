@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'dart:ui' as ui;
+import 'dart:typed_data';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -18,37 +21,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
   static const CameraPosition initialCameraPosition =
       CameraPosition(target: LatLng(14.6824, -17.4408), zoom: 14);
 
-  final Set<Marker> _marker = {};
-  final Set<Marker> _list = {
-    // Marker(
-    //     markerId: MarkerId('0'),
-    //     position: LatLng(14.6824, -17.4408),
-    //     infoWindow: InfoWindow(title: 'PARC SMART')),
-    // Marker(
-    //     markerId: MarkerId('1'),
-    //     position: LatLng(14.6826, -17.4404),
-    //     infoWindow: InfoWindow(
-    //       title: '1-CENTRAL PARK',
-    //     )),
-    const Marker(
-        markerId: MarkerId('1'),
-        position: LatLng(14.6947, -17.4731),
-        infoWindow: InfoWindow(
-          title: 'My Position',
-        )),
-    const Marker(
-        markerId: MarkerId('2'),
-        position: LatLng(14.6951, -17.4595),
-        infoWindow: InfoWindow(
-          title: 'Location 1',
-        )),
-    const Marker(
-        markerId: MarkerId('3'),
-        position: LatLng(14.6751, -17.4369),
-        infoWindow: InfoWindow(
-          title: 'Location 2',
-        )),
-  };
+  // final Set<Marker> _marker = {};
   @override
   initState() {
     super.initState();
@@ -56,9 +29,43 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     _searchController.addListener(() {
       setState(() {});
     });
-    _marker.addAll(_list);
+    buildMarker();
+    // final Set<Marker> set = {
+    //   // Marker(
+    //   //     markerId: MarkerId('0'),
+    //   //     position: LatLng(14.6824, -17.4408),
+    //   //     infoWindow: InfoWindow(title: 'PARC SMART')),
+    //   // Marker(
+    //   //     markerId: MarkerId('1'),
+    //   //     position: LatLng(14.6826, -17.4404),
+    //   //     infoWindow: InfoWindow(
+    //   //       title: '1-CENTRAL PARK',
+    //   //     )),
+    //   const Marker(
+    //       markerId: MarkerId('1'),
+    //       position: LatLng(14.6947, -17.4731),
+    //       infoWindow: InfoWindow(
+    //         title: 'My Position',
+    //       )),
+    //   const Marker(
+    //       markerId: MarkerId('2'),
+    //       position: LatLng(14.6951, -17.4595),
+    //       infoWindow: InfoWindow(
+    //         title: 'Location 1',
+    //       )),
+    //   Marker(
+    //       markerId: MarkerId('3'),
+    //       icon: icon ?? BitmapDescriptor.defaultMarker,
+    //       position: LatLng(14.6751, -17.4369),
+    //       infoWindow: InfoWindow(
+    //         title: 'Location 2',
+    //       )),
+    // };
+    // _marker.addAll(set);
   }
 
+  bool isLoading = true;
+  var icon;
   @override
   void dispose() {
     // TODO: implement dispose
@@ -189,16 +196,55 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
           SizedBox(
             width: width,
             height: height * 0.86,
-            child: GoogleMap(
-                markers: _marker,
-                myLocationEnabled: true,
-                initialCameraPosition: initialCameraPosition,
-                myLocationButtonEnabled: false,
-                indoorViewEnabled: true,
-                // mapType: MapType.hybrid,
-                onMapCreated: (GoogleMapController controller) {
-                  googleMapController = controller;
-                }),
+            child: isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(
+                    color: Colors.red,
+                  ))
+                : GoogleMap(
+                    markers: {
+                        Marker(
+                            markerId: const MarkerId('0'),
+                            icon: BitmapDescriptor.fromBytes(icon),
+                            position: const LatLng(14.6824, -17.4408),
+                            infoWindow: const InfoWindow(title: 'PARC SMART')),
+                        Marker(
+                            markerId: const MarkerId('1'),
+                            position: const LatLng(14.6826, -17.4404),
+                            icon: BitmapDescriptor.fromBytes(icon),
+                            infoWindow: const InfoWindow(
+                              title: '1-CENTRAL PARK',
+                            )),
+                        Marker(
+                            markerId: const MarkerId('1'),
+                            icon: BitmapDescriptor.fromBytes(icon),
+                            position: const LatLng(14.6947, -17.4731),
+                            infoWindow: const InfoWindow(
+                              title: 'My Position',
+                            )),
+                        Marker(
+                            icon: BitmapDescriptor.fromBytes(icon),
+                            markerId: const MarkerId('2'),
+                            position: const LatLng(14.6951, -17.4595),
+                            infoWindow: const InfoWindow(
+                              title: 'Location 1',
+                            )),
+                        Marker(
+                            markerId: const MarkerId('3'),
+                            icon: BitmapDescriptor.fromBytes(icon),
+                            position: const LatLng(14.6751, -17.4369),
+                            infoWindow: const InfoWindow(
+                              title: 'Location 2',
+                            )),
+                      },
+                    myLocationEnabled: true,
+                    initialCameraPosition: initialCameraPosition,
+                    myLocationButtonEnabled: false,
+                    indoorViewEnabled: true,
+                    // mapType: MapType.hybrid,
+                    onMapCreated: (GoogleMapController controller) {
+                      googleMapController = controller;
+                    }),
           ),
           Container(
             width: width,
@@ -310,5 +356,24 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     }
     Position position = await Geolocator.getCurrentPosition();
     return position;
+  }
+
+  Future<Uint8List> getBytesFromAsset(
+      {required String path, required int width, required int height}) async {
+    ByteData data = await rootBundle.load(path);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+        targetHeight: height, targetWidth: width);
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
+        .buffer
+        .asUint8List();
+  }
+
+  buildMarker() async {
+    icon = await getBytesFromAsset(
+        path: 'assets/images/markerImg.png', height: 100, width: 200);
+    setState(() {
+      isLoading = false;
+    });
   }
 }
