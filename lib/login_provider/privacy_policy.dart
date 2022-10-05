@@ -12,7 +12,7 @@ class PrivacyPolicy extends StatelessWidget {
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.only(top: 13.0),
-        color: Colors.transparent,
+        color: Colors.white,
         width: width,
         height: height,
         child: WebViewPlus(
