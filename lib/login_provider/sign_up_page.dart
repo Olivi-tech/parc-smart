@@ -142,7 +142,6 @@ class SignUpPage extends StatelessWidget {
                             MaterialPageRoute(
                                 builder: (context) => const SignIn()));
                       },
-                      splashColor: Colors.redAccent,
                       child: const Padding(
                         padding: EdgeInsets.only(top: 4.0),
                         child: Text(
