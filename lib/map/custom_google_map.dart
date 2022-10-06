@@ -22,6 +22,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
   String? sessionToken;
   List<dynamic> placesList = [];
   bool isSwitched = false;
+  bool isSearching = true;
   late TextEditingController _searchController;
   late GoogleMapController googleMapController;
   static const CameraPosition initialCameraPosition =
@@ -173,6 +174,9 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
                     shape: BoxShape.rectangle,
                   ),
                   child: TextFormField(
+                    onTap: () {
+                      isSearching = false;
+                    },
                     controller: _searchController,
                     textInputAction: TextInputAction.search,
                     decoration: InputDecoration(
@@ -230,7 +234,9 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
                         indoorViewEnabled: true,
                         // mapType: MapType.hybrid,
                         onMapCreated: (GoogleMapController controller) {
-                          googleMapController = controller;
+                          setState(() {
+                            googleMapController = controller;
+                          });
                         }),
               ),
               Container(
@@ -297,34 +303,32 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
               )
             ],
           ),
-          _searchController.text.isEmpty
+          isSearching
               ? const SizedBox(
                   width: 0,
                   height: 0,
                 )
               : Positioned(
-                  top: 50,
+                  top: 42,
                   left: 20,
                   right: 20,
                   child: Container(
                     color: Colors.white,
                     width: width,
-                    height: height * 0.6,
                     child: ListView.builder(
                         itemCount: placesList.length,
+                        shrinkWrap: true,
                         itemBuilder: (context, index) {
                           return ListTile(
                             //     tileColor: Colors.white70,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15)),
                             onTap: () async {
+                              isSearching = true;
                               _searchController.text =
                                   placesList[index]['description'];
                               print(
                                   '_searchController.text ==${_searchController.text}/////////');
-
-                              Position position =
-                                  await Geolocator.getCurrentPosition();
                               List<Location> locations =
                                   await locationFromAddress(
                                       placesList[index]['description']);
@@ -377,37 +381,6 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       Future.error('Location is disabled');
-      // Geolocator.openLocationSettings();
-      // showDialog(
-      //     context: context,
-      //     builder: (context) => Center(
-      //             child: Container(
-      //           width: 300,
-      //           color: Colors.white,
-      //           height: 300,
-      //           child: Column(
-      //             children: [
-      //               Text('Location is Disabled'),
-      //               SizedBox(height: 20),
-      //               Row(
-      //                 children: [
-      //                   ElevatedButton(
-      //                       onPressed: () {
-      //                         Navigator.pop(context);
-      //                       },
-      //                       child: Text('Deny')),
-      //                   ElevatedButton(
-      //                       onPressed: () {
-      //
-      //                       },
-      //                       child: Text('Allow')),
-      //                 ],
-      //               )
-      //             ],
-      //           ),
-      //         )));
-      // Location location = Location();
-      // await location.requestService();
     }
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {

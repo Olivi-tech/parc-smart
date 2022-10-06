@@ -12,7 +12,7 @@ class SignIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    print('/////////////////////////////$width//////////////////////////');
+    //print('/////////////////////////////$width//////////////////////////');
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Padding(
