@@ -7,7 +7,7 @@ import 'package:webview_flutter_plus/webview_flutter_plus.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({Key? key}) : super(key: key);
-  final String signUpImage = 'assets/images/sign-up.png';
+  final String signUpImage = 'assets/images/sign-up-removebg-preview.png';
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
